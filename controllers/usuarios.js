@@ -50,8 +50,6 @@ exports.editarUser = async (req, res) => {
     cidade: req.body.cidade,
     estado: req.body.estado
   };
-
-  User.validarRG(usuario.rg);
   
   if(User.validarCPF(usuario.cpf) === true) {
     await User.findByIdAndUpdate(req.params.id, usuario, (err, user) => {
