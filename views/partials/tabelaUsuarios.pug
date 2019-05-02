@@ -1,0 +1,47 @@
+h3 Lista de usuários cadastrados
+#usuarios
+  if usuarios.length === 0
+    h5 Não há usuário cadastrado
+  else
+    table(style="text-align: center").table.table-striped.table-hover.table-bordered
+      thead.thead-dark
+        tr
+          th(scope="col") Nome
+          th(scope="col") Telefone
+          th(scope="col") Nascimento
+          th(scope="col") RG
+          th(scope="col") CPF
+          th(scope="col") Endereço
+          th(scope="col") CEP
+          th(scope="col") Cidade
+          th(scope="col") Estado
+          th(scope="col") Atualizar
+        tbody 
+          each _id in usuarios
+            tr
+              td= _id.nome
+              td= _id.telefone
+              if(_id.nascimento != null)
+                if(_id.nascimento.getUTCDate() < 10)
+                  - var dia = "0" + (new Date(_id.nascimento).getUTCDate()).toString();
+                else
+                  - var dia = new Date(_id.nascimento).getUTCDate().toString();
+                if(_id.nascimento.getUTCMonth() < 10)
+                  - var mes = "0" + (new Date(_id.nascimento).getUTCMonth()+1).toString();
+                else
+                  - var mes = new Date(_id.nascimento).getUTCMonth()+1;
+                - var ano = new Date(_id.nascimento).getUTCFullYear();
+                td= `${dia}/${mes}/${ano}`
+              else 
+                td= ''
+              td= _id.rg
+              td= _id.cpf
+              td= _id.endereco
+              td= _id.cep
+              td= _id.cidade
+              td= _id.estado
+              td
+                - var editUrl = '/usuario/' + _id._id;
+                - var deleteUrl = '/delete/' + _id._id;
+                a(style="margin-left: 10px", href=editUrl).navbar-brand.i.fas.fa-edit
+                a.navbar-brand(href=deleteUrl).i.fas.fa-trash-alt

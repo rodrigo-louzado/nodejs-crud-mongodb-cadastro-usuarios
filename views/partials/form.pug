@@ -1,0 +1,74 @@
+h3 #{formType} usuário
+- var action;
+if(formType === 'Editar')
+  - action = "/usuario/" + user._id;
+else
+  - action = "/cadastrar"
+form(method='post', action=action)
+  input(type='hidden', name='_csrf', value=_csrf)
+  .form-group
+    label Nome
+    if(user)
+      input.form-control(type='text' placeholder='Nome' name='nome' value=user.nome required)
+    else 
+      input.form-control(type='text' placeholder='Nome' name='nome' required)
+  .form-group
+    label Telefone
+    if(user)
+      input.form-control(type='tel' pattern="^\\([0-9]{2}\\)[\\s][0-9]{4,5}-[0-9]{4}" title="(xx) xxxx-xxxx ou (xx) xxxxx-xxxx" placeholder="Telefone" name='telefone' value=user.telefone maxlength=15 required)
+    else 
+      input.form-control(type='tel' pattern="^\\([0-9]{2}\\)[\\s][0-9]{4,5}-[0-9]{4}" title="(xx) xxxx-xxxx ou (xx) xxxxx-xxxx" placeholder="Telefone" name='telefone' maxlength=15 required)
+  .form-group
+    label Data de Nascimento
+    if(user) 
+      if(user.nascimento.getUTCDate() < 10)
+        - var dia = "0" + (new Date(user.nascimento).getUTCDate()).toString();
+      else
+        - var dia = new Date(user.nascimento).getUTCDate().toString();
+      if(user.nascimento.getUTCMonth() < 10)
+        - var mes = "0" + (new Date(user.nascimento).getUTCMonth()+1).toString();
+      else
+        - var mes = new Date(user.nascimento).getUTCMonth()+1;
+      - var ano = new Date(user.nascimento).getUTCFullYear();
+      - var date = `${ano}-${mes}-${dia}`;      
+      input.form-control(type='date', name='nascimento', value=date, required)         
+    else 
+      input.form-control(type='date', name='nascimento', required)
+  .form-group
+    label RG
+    if(user)
+      input.form-control(type='text' pattern="^[0-9]{2}.[0-9]{3}.[0-9]{3}-[0-9]{1}$" title="Formato a ser utilizado xx.xxx.xxx-x" placeholder="RG" name='rg' maxlength=12 value=user.rg required)
+    else 
+      input.form-control(type='text' pattern="^[0-9]{2}.[0-9]{3}.[0-9]{3}-[0-9]{1}$" title="Formato a ser utilizado xx.xxx.xxx-x" placeholder="RG" name='rg' maxlength=12 required)
+  .form-group
+    label CPF
+    if(user)
+      input.form-control(type='text' pattern="^[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$" title="Formato a ser utilizado xxx.xxx.xxx-xx" placeholder="CPF" name='cpf' maxlength=14 value=user.cpf required)
+    else
+      input.form-control(type='text' pattern="^[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$" title="Formato a ser utilizado xxx.xxx.xxx-xx" placeholder="CPF" name='cpf' maxlength=14 required)
+  .form-group
+    label Endereço
+    if(user)
+      input.form-control(type='text', placeholder="Endereço", name='endereco', value=user.endereco, required)
+    else 
+      input.form-control(type='text', placeholder="Endereço", name='endereco', required)
+  .form-row
+    .form-group.col-md-4
+      label CEP
+      if(user)
+        input.form-control(type='text', pattern="^[0-9]{5}-[0-9]{3}$", title="Formato a ser utilizado xxxxx-xxx" placeholder="CEP", name='cep', maxlength=9, value=user.cep, required)
+      else
+        input.form-control(type='text', pattern="^[0-9]{5}-[0-9]{3}$", title="Formato a ser utilizado xxxxx-xxx" placeholder="CEP", name='cep', maxlength=9, required)
+    .form-group.col-md-6
+      label Cidade
+      if(user)
+        input.form-control(type='text', placeholder="Cidade", name='cidade', value=user.cidade, required)
+      else 
+        input.form-control(type='text', placeholder="Cidade", name='cidade', required)
+    .form-group.col-md-2
+      label Estado
+      if(user)
+        input.form-control(type='text', placeholder="Estado", name='estado', value=user.estado, required)
+      else 
+        input.form-control(type='text', placeholder="Estado", name='estado', required)
+    button.btn.btn-primary.btn-lg(type="submit") Salvar
